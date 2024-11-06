@@ -4,119 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire de Réclamation Qualité</title>
-    <script>
-        function validateForm() {
-            let isValid = true;
-
-            // Validation de la date
-            const dateReclamation = document.getElementById("dateReclamation");
-            if (!dateReclamation.value) {
-                alert("Veuillez entrer la date de la réclamation.");
-                isValid = false;
-            }
-
-            // Validation du numéro de série
-            const numeroSerie = document.getElementById("numeroSerie");
-            const regexSerie = /^[A-Z0-9]{10}$/; // exemple de format : 10 caractères alphanumériques
-            if (!regexSerie.test(numeroSerie.value)) {
-                alert("Veuillez entrer un numéro de série valide (10 caractères alphanumériques).");
-                isValid = false;
-            }
-
-            // Validation de la référence de l'instrument
-            const referenceInstrument = document.getElementById("referenceInstrument");
-            if (referenceInstrument.value === "") {
-                alert("Veuillez entrer la référence de l'instrument.");
-                isValid = false;
-            }
-
-            // Validation du numéro de facture
-            const numeroFacture = document.getElementById("numeroFacture");
-            const regexFacture = /^[0-9]{8}$/; // exemple : 8 chiffres
-            if (!regexFacture.test(numeroFacture.value)) {
-                alert("Veuillez entrer un numéro de facture valide (8 chiffres).");
-                isValid = false;
-            }
-
-            // Validation des pièces jointes (au moins une photo avec numéro de série)
-            const photo = document.getElementById("photo");
-            if (!photo.files.length) {
-                alert("Veuillez ajouter au moins une photo de l'instrument avec le numéro de série visible.");
-                isValid = false;
-            }
-
-            // Validation de l'état du colis et de la date d'enlèvement si applicable
-            const colisOui = document.getElementById("colisOui").checked;
-            const colisNon = document.getElementById("colisNon").checked;
-            const dateEnlevement = document.getElementById("dateEnlevement");
-            if (colisNon && !dateEnlevement.value) {
-                alert("Veuillez entrer une date d'enlèvement.");
-                isValid = false;
-            }
-
-            return isValid;
-        }
-    </script>
 </head>
 <body>
-
-<h2>Formulaire de Réclamation Qualité</h2>
-
-<!-- Remplacez l'URL par votre formulaire Google Forms -->
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSeHq_wlGeEoJrGe9nId1eZn-J8Aep1tzRrBbN-D3fUGy5bGXA/formResponse" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
-    <label for="dateReclamation">Date de la réclamation :</label>
-    <input type="date" id="dateReclamation" name="entry.1234567890" required><br><br> <!-- Remplacez entry.1234567890 par l'ID de votre champ dans Google Forms -->
-    
-    <label for="nomRevendeur">Nom du revendeur :</label>
-    <input type="text" id="nomRevendeur" name="entry.2345678901" required><br><br> <!-- Remplacez entry.2345678901 par l'ID de votre champ dans Google Forms -->
-
-    <label for="numeroSerie">N° de Série de l’instrument :</label>
-    <input type="text" id="numeroSerie" name="entry.3456789012" maxlength="10" required><br><br> <!-- Remplacez entry.3456789012 par l'ID de votre champ dans Google Forms -->
-
-    <label for="referenceInstrument">Référence de l’instrument :</label>
-    <input type="text" id="referenceInstrument" name="entry.4567890123" required><br><br> <!-- Remplacez entry.4567890123 par l'ID de votre champ dans Google Forms -->
-
-    <label for="numeroFacture">Numéro et date de la facture :</label>
-    <input type="text" id="numeroFacture" name="entry.5678901234" maxlength="8" required>
-    <input type="date" id="dateFacture" name="entry.6789012345"><br><br> <!-- Remplacez entry.6789012345 par l'ID de votre champ dans Google Forms -->
-
-    <label for="objetReclamation">Objet de la réclamation :</label>
-    <textarea id="objetReclamation" name="entry.7890123456" required></textarea><br><br> <!-- Remplacez entry.7890123456 par l'ID de votre champ dans Google Forms -->
-
-    <label>Le colis est-il prêt :</label>
-    <input type="radio" id="colisOui" name="entry.8901234567" value="oui">
-    <label for="colisOui">Oui</label>
-    <input type="radio" id="colisNon" name="entry.8901234567" value="non">
-    <label for="colisNon">Non</label><br><br> <!-- Remplacez entry.8901234567 par l'ID de votre champ dans Google Forms -->
-
-    <label for="poidsDimension">Poids et dimension :</label>
-    <input type="text" id="poidsDimension" name="entry.9012345678"><br><br> <!-- Remplacez entry.9012345678 par l'ID de votre champ dans Google Forms -->
-
-    <label for="dateEnlevement">Date d'enlèvement :</label>
-    <input type="date" id="dateEnlevement" name="entry.0123456789"><br><br> <!-- Remplacez entry.0123456789 par l'ID de votre champ dans Google Forms -->
-
-    <label for="photo">Photos (dont une avec le numéro de série) :</label>
-    <input type="file" id="photo" name="entry.123498765" accept="image/*" multiple><br><br> <!-- Remplacez entry.123498765 par l'ID de votre champ dans Google Forms -->
-
-    <label for="proforma">Proforma pour les pays à douane :</label>
-    <input type="file" id="proforma" name="entry.234589765" accept=".pdf"><br><br> <!-- Remplacez entry.234589765 par l'ID de votre champ dans Google Forms -->
-
-    <!-- Champ pour l'adresse email -->
-    <label for="email">Votre adresse email :</label>
-    <input type="email" id="email" name="entry.3456908765" required><br><br> <!-- Remplacez entry.3456908765 par l'ID de votre champ dans Google Forms -->
-
-    <input type="submit" value="Envoyer">
-</form>
-
-<!-- Confirmation du succès de l'envoi (simple exemple) -->
-<script>
-    const form = document.querySelector('form');
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        alert('Votre formulaire a bien été envoyé !');
-        form.reset(); // Réinitialise le formulaire après envoi
-    });
-</script>
-
+    <h2>Formulaire de Réclamation Qualité</h2>
+    <p>Pour remplir le formulaire et envoyer vos fichiers, cliquez sur le bouton ci-dessous :</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScaobLag9pD28uujh21-I2Co9KZJsGZOJBjAm611g37HVk4oQ/viewform" target="_blank">
+        <button>Accéder au formulaire</button>
+    </a>
 </body>
 </html>
