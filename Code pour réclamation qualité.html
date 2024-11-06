@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulaire de Réclamation Qualité</title>
+<script>
+function validateForm() {
+    let isValid = true;
+
+    // Validation de la date
+    const dateReclamation = document.getElementById("dateReclamation");
+    if (!dateReclamation.value) {
+        alert("Veuillez entrer la date de la réclamation.");
+        isValid = false;
+    }
+
+    // Validation du numéro de série
+    const numeroSerie = document.getElementById("numeroSerie");
+    const regexSerie = /^[A-Z0-9]{10}$/; // exemple de format : 10 caractères alphanumériques
+    if (!regexSerie.test(numeroSerie.value)) {
+        alert("Veuillez entrer un numéro de série valide (10 caractères alphanumériques).");
+        isValid = false;
+    }
+
+    // Validation de la référence de l'instrument
+    const referenceInstrument = document.getElementById("referenceInstrument");
+    if (referenceInstrument.value === "") {
+        alert("Veuillez entrer la référence de l'instrument.");
+        isValid = false;
+    }
+
+    // Validation du numéro de facture
+    const numeroFacture = document.getElementById("numeroFacture");
+    const regexFacture = /^[0-9]{8}$/; // exemple : 8 chiffres
+    if (!regexFacture.test(numeroFacture.value)) {
+        alert("Veuillez entrer un numéro de facture valide (8 chiffres).");
+        isValid = false;
+    }
+
+    // Validation des pièces jointes (au moins une photo avec numéro de série)
+    const photo = document.getElementById("photo");
+    if (!photo.files.length) {
+        alert("Veuillez ajouter au moins une photo de l'instrument avec le numéro de série visible.");
+        isValid = false;
+    }
+
+    // Validation de l'état du colis et de la date d'enlèvement si applicable
+    const colisOui = document.getElementById("colisOui").checked;
+    const colisNon = document.getElementById("colisNon").checked;
+    const dateEnlevement = document.getElementById("dateEnlevement");
+    if (colisNon && !dateEnlevement.value) {
+        alert("Veuillez entrer une date d'enlèvement.");
+        isValid = false;
+    }
+
+    return isValid;
+}
+</script>
+</head>
+<body>
+
+<h2>Formulaire de Réclamation Qualité</h2>
+
+<form onsubmit="return validateForm()">
+    <label for="dateReclamation">Date de la réclamation :</label>
+    <input type="date" id="dateReclamation" name="dateReclamation"><br><br>
+
+    <label for="nomRevendeur">Nom du revendeur :</label>
+    <input type="text" id="nomRevendeur" name="nomRevendeur" required><br><br>
+
+    <label for="numeroSerie">N° de Série de l’instrument :</label>
+    <input type="text" id="numeroSerie" name="numeroSerie" maxlength="10" required><br><br>
+
+    <label for="referenceInstrument">Référence de l’instrument :</label>
+    <input type="text" id="referenceInstrument" name="referenceInstrument" required><br><br>
+
+    <label for="numeroFacture">Numéro et date de la facture :</label>
+    <input type="text" id="numeroFacture" name="numeroFacture" maxlength="8" required>
+    <input type="date" id="dateFacture" name="dateFacture"><br><br>
+
+    <label for="objetReclamation">Objet de la réclamation :</label>
+    <textarea id="objetReclamation" name="objetReclamation" required></textarea><br><br>
+
+    <label>Le colis est-il prêt :</label>
+    <input type="radio" id="colisOui" name="colisPret" value="oui">
+    <label for="colisOui">Oui</label>
+    <input type="radio" id="colisNon" name="colisPret" value="non">
+    <label for="colisNon">Non</label><br><br>
+
+    <label for="poidsDimension">Poids et dimension :</label>
+    <input type="text" id="poidsDimension" name="poidsDimension"><br><br>
+
+    <label for="dateEnlevement">Date d'enlèvement :</label>
+    <input type="date" id="dateEnlevement" name="dateEnlevement"><br><br>
+
+    <label for="photo">Photos (dont une avec le numéro de série) :</label>
+    <input type="file" id="photo" name="photo" accept="image/*" multiple><br><br>
+
+    <label for="proforma">Proforma pour les pays à douane :</label>
+    <input type="file" id="proforma" name="proforma" accept=".pdf"><br><br>
+
+    <input type="submit" value="Envoyer">
+</form>
+
+</body>
+</html>
