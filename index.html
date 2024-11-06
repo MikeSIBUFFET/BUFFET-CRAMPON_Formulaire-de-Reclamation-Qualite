@@ -62,48 +62,48 @@
 
 <h2>Formulaire de Réclamation Qualité</h2>
 
-<!-- Remplacez "https://formspree.io/f/xrbgqplj" par votre URL Formspree -->
-<form action="https://formspree.io/f/xrbgqplj" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+<!-- Remplacez l'URL par votre formulaire Google Forms -->
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSeHq_wlGeEoJrGe9nId1eZn-J8Aep1tzRrBbN-D3fUGy5bGXA/formResponse" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
     <label for="dateReclamation">Date de la réclamation :</label>
-    <input type="date" id="dateReclamation" name="dateReclamation" required><br><br>
+    <input type="date" id="dateReclamation" name="entry.1234567890" required><br><br> <!-- Remplacez entry.1234567890 par l'ID de votre champ dans Google Forms -->
     
     <label for="nomRevendeur">Nom du revendeur :</label>
-    <input type="text" id="nomRevendeur" name="nomRevendeur" required><br><br>
+    <input type="text" id="nomRevendeur" name="entry.2345678901" required><br><br> <!-- Remplacez entry.2345678901 par l'ID de votre champ dans Google Forms -->
 
     <label for="numeroSerie">N° de Série de l’instrument :</label>
-    <input type="text" id="numeroSerie" name="numeroSerie" maxlength="10" required><br><br>
+    <input type="text" id="numeroSerie" name="entry.3456789012" maxlength="10" required><br><br> <!-- Remplacez entry.3456789012 par l'ID de votre champ dans Google Forms -->
 
     <label for="referenceInstrument">Référence de l’instrument :</label>
-    <input type="text" id="referenceInstrument" name="referenceInstrument" required><br><br>
+    <input type="text" id="referenceInstrument" name="entry.4567890123" required><br><br> <!-- Remplacez entry.4567890123 par l'ID de votre champ dans Google Forms -->
 
     <label for="numeroFacture">Numéro et date de la facture :</label>
-    <input type="text" id="numeroFacture" name="numeroFacture" maxlength="8" required>
-    <input type="date" id="dateFacture" name="dateFacture"><br><br>
+    <input type="text" id="numeroFacture" name="entry.5678901234" maxlength="8" required>
+    <input type="date" id="dateFacture" name="entry.6789012345"><br><br> <!-- Remplacez entry.6789012345 par l'ID de votre champ dans Google Forms -->
 
     <label for="objetReclamation">Objet de la réclamation :</label>
-    <textarea id="objetReclamation" name="objetReclamation" required></textarea><br><br>
+    <textarea id="objetReclamation" name="entry.7890123456" required></textarea><br><br> <!-- Remplacez entry.7890123456 par l'ID de votre champ dans Google Forms -->
 
     <label>Le colis est-il prêt :</label>
-    <input type="radio" id="colisOui" name="colisPret" value="oui">
+    <input type="radio" id="colisOui" name="entry.8901234567" value="oui">
     <label for="colisOui">Oui</label>
-    <input type="radio" id="colisNon" name="colisPret" value="non">
-    <label for="colisNon">Non</label><br><br>
+    <input type="radio" id="colisNon" name="entry.8901234567" value="non">
+    <label for="colisNon">Non</label><br><br> <!-- Remplacez entry.8901234567 par l'ID de votre champ dans Google Forms -->
 
     <label for="poidsDimension">Poids et dimension :</label>
-    <input type="text" id="poidsDimension" name="poidsDimension"><br><br>
+    <input type="text" id="poidsDimension" name="entry.9012345678"><br><br> <!-- Remplacez entry.9012345678 par l'ID de votre champ dans Google Forms -->
 
     <label for="dateEnlevement">Date d'enlèvement :</label>
-    <input type="date" id="dateEnlevement" name="dateEnlevement"><br><br>
+    <input type="date" id="dateEnlevement" name="entry.0123456789"><br><br> <!-- Remplacez entry.0123456789 par l'ID de votre champ dans Google Forms -->
 
     <label for="photo">Photos (dont une avec le numéro de série) :</label>
-    <input type="file" id="photo" name="photo" accept="image/*" multiple><br><br>
+    <input type="file" id="photo" name="entry.123498765" accept="image/*" multiple><br><br> <!-- Remplacez entry.123498765 par l'ID de votre champ dans Google Forms -->
 
     <label for="proforma">Proforma pour les pays à douane :</label>
-    <input type="file" id="proforma" name="proforma" accept=".pdf"><br><br>
+    <input type="file" id="proforma" name="entry.234589765" accept=".pdf"><br><br> <!-- Remplacez entry.234589765 par l'ID de votre champ dans Google Forms -->
 
     <!-- Champ pour l'adresse email -->
     <label for="email">Votre adresse email :</label>
-    <input type="email" id="email" name="email" required><br><br>
+    <input type="email" id="email" name="entry.3456908765" required><br><br> <!-- Remplacez entry.3456908765 par l'ID de votre champ dans Google Forms -->
 
     <input type="submit" value="Envoyer">
 </form>
