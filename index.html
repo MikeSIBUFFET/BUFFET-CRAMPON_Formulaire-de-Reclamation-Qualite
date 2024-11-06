@@ -62,11 +62,11 @@
 
 <h2>Formulaire de Réclamation Qualité</h2>
 
+<!-- Remplacez "https://formspree.io/f/xrbgqplj" par votre URL Formspree -->
 <form action="https://formspree.io/f/xrbgqplj" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
     <label for="dateReclamation">Date de la réclamation :</label>
     <input type="date" id="dateReclamation" name="dateReclamation" required><br><br>
     
-
     <label for="nomRevendeur">Nom du revendeur :</label>
     <input type="text" id="nomRevendeur" name="nomRevendeur" required><br><br>
 
@@ -101,8 +101,22 @@
     <label for="proforma">Proforma pour les pays à douane :</label>
     <input type="file" id="proforma" name="proforma" accept=".pdf"><br><br>
 
+    <!-- Champ pour l'adresse email -->
+    <label for="email">Votre adresse email :</label>
+    <input type="email" id="email" name="email" required><br><br>
+
     <input type="submit" value="Envoyer">
 </form>
+
+<!-- Confirmation du succès de l'envoi (simple exemple) -->
+<script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        alert('Votre formulaire a bien été envoyé !');
+        form.reset(); // Réinitialise le formulaire après envoi
+    });
+</script>
 
 </body>
 </html>
