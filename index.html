@@ -67,6 +67,42 @@
         .button-link:hover {
             background-color: #0056b3;
         }
+
+        /* Formulaire de réclamation */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-field {
+            margin-bottom: 12px;
+            width: 100%;
+        }
+
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -75,19 +111,38 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo_BC_2016.svg/1200px-Logo_BC_2016.svg.png" alt="Buffet Crampon Logo" class="logo">
 
         <h2>Formulaire de Réclamation Qualité</h2>
-        <p>Pour remplir le formulaire et envoyer vos fichiers, cliquez sur le bouton ci-dessous :</p>
-        
-        <!-- Lien vers le formulaire (bouton) -->
-        <a href="https://forms.gle/MS2fbmTqZC2ray3f9" target="_blank" class="button-link">
-            Accéder au formulaire
-        </a>
+        <p>Veuillez remplir les informations ci-dessous et soumettre votre réclamation :</p>
 
-        <p>Ou vous pouvez également remplir le formulaire directement ici :</p>
+        <!-- Formulaire HTML -->
+        <form id="claimForm" action="https://docs.google.com/forms/d/e/1FAIpQLScaobLag9pD28uujh21-I2Co9KZJsGZOJBjAm611g37HVk4oQ/formResponse" method="POST" target="hidden_iframe">
+            <!-- Champ nom -->
+            <div class="form-field">
+                <label for="nom">Nom</label>
+                <input type="text" id="nom" name="entry.1234567890" required>
+            </div>
+            <!-- Champ email -->
+            <div class="form-field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="entry.0987654321" required>
+            </div>
+            <!-- Champ réclamation -->
+            <div class="form-field">
+                <label for="reclamation">Réclamation</label>
+                <textarea id="reclamation" name="entry.1122334455" rows="4" required></textarea>
+            </div>
+            <!-- Bouton de soumission -->
+            <button type="submit">Envoyer ma réclamation</button>
+        </form>
 
-        <!-- Intégration du formulaire dans une iframe -->
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScaobLag9pD28uujh21-I2Co9KZJsGZOJBjAm611g37HVk4oQ/viewform?usp=sf_link" width="100%" height="600" frameborder="0">
-            Chargement…
-        </iframe>
+        <!-- iframe cachée pour éviter d'ouvrir une nouvelle page -->
+        <iframe name="hidden_iframe" style="display:none;"></iframe>
     </div>
+
+    <script>
+        // Script pour empêcher le formulaire de recharger la page
+        document.getElementById('claimForm').onsubmit = function() {
+            alert("Votre réclamation a été soumise avec succès !");
+        };
+    </script>
 </body>
 </html>
