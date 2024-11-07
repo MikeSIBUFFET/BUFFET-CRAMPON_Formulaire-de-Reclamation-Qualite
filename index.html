@@ -49,25 +49,6 @@
             margin-bottom: 24px;
         }
 
-        /* Bouton de formulaire */
-        .button-link {
-            display: inline-block;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Effet hover sur le bouton */
-        .button-link:hover {
-            background-color: #0056b3;
-        }
-
         /* Formulaire de réclamation */
         form {
             display: flex;
@@ -103,6 +84,11 @@
         button:hover {
             background-color: #218838;
         }
+
+        .success-message {
+            color: green;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -134,14 +120,33 @@
             <button type="submit">Envoyer ma réclamation</button>
         </form>
 
-        <!-- iframe cachée pour éviter d'ouvrir une nouvelle page -->
-        <iframe name="hidden_iframe" style="display:none;"></iframe>
+        <!-- Zone de message de succès -->
+        <div id="successMessage" class="success-message" style="display:none;">Votre réclamation a été soumise avec succès !</div>
     </div>
 
     <script>
-        // Script pour empêcher le formulaire de recharger la page
-        document.getElementById('claimForm').onsubmit = function() {
-            alert("Votre réclamation a été soumise avec succès !");
+        // Script pour empêcher le formulaire de recharger la page et afficher un message de succès
+        document.getElementById('claimForm').onsubmit = function(event) {
+            event.preventDefault(); // Empêche le formulaire de se soumettre de manière traditionnelle
+
+            // Récupère les données du formulaire
+            var formData = new FormData(this);
+
+            // Envoie les données via Fetch API
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(function() {
+                // Affiche le message de succès
+                document.getElementById('successMessage').style.display = 'block';
+                // Optionnel : Réinitialiser le formulaire après soumission
+                document.getElementById('claimForm').reset();
+            })
+            .catch(function(error) {
+                console.error('Erreur lors de l\'envoi de la réclamation : ', error);
+            });
         };
     </script>
 </body>
