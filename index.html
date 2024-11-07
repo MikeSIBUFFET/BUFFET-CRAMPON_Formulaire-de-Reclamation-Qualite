@@ -49,45 +49,23 @@
             margin-bottom: 24px;
         }
 
-        /* Formulaire de réclamation */
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .form-field {
-            margin-bottom: 12px;
-            width: 100%;
-        }
-
-        input[type="text"], input[type="email"], textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        button {
+        /* Bouton de formulaire */
+        .button-link {
+            display: inline-block;
             padding: 12px 24px;
             font-size: 16px;
             font-weight: bold;
             color: #fff;
-            background-color: #28a745;
+            background-color: #007bff;
             border: none;
             border-radius: 4px;
-            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
         }
 
-        button:hover {
-            background-color: #218838;
-        }
-
-        .success-message {
-            color: green;
-            font-weight: bold;
+        /* Effet hover sur le bouton */
+        .button-link:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -97,57 +75,11 @@
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo_BC_2016.svg/1200px-Logo_BC_2016.svg.png" alt="Buffet Crampon Logo" class="logo">
 
         <h2>Formulaire de Réclamation Qualité</h2>
-        <p>Veuillez remplir les informations ci-dessous et soumettre votre réclamation :</p>
-
-        <!-- Formulaire HTML -->
-        <form id="claimForm" action="https://docs.google.com/forms/d/e/1FAIpQLScaobLag9pD28uujh21-I2Co9KZJsGZOJBjAm611g37HVk4oQ/formResponse" method="POST" target="hidden_iframe">
-            <!-- Champ nom -->
-            <div class="form-field">
-                <label for="nom">Nom</label>
-                <input type="text" id="nom" name="entry.1234567890" required>
-            </div>
-            <!-- Champ email -->
-            <div class="form-field">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="entry.0987654321" required>
-            </div>
-            <!-- Champ réclamation -->
-            <div class="form-field">
-                <label for="reclamation">Réclamation</label>
-                <textarea id="reclamation" name="entry.1122334455" rows="4" required></textarea>
-            </div>
-            <!-- Bouton de soumission -->
-            <button type="submit">Envoyer ma réclamation</button>
-        </form>
-
-        <!-- Zone de message de succès -->
-        <div id="successMessage" class="success-message" style="display:none;">Votre réclamation a été soumise avec succès !</div>
+        <p>Pour remplir le formulaire et envoyer vos fichiers, cliquez sur le bouton ci-dessous :</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVsPlXCaEqYWGYpQPZMW6MWprHGjVNXaa72_xal3Gy12v_vQ/viewform?vc=0&c=0&w=1" 
+           target="_blank" class="button-link">
+            Accéder au formulaire
+        </a>
     </div>
-
-    <script>
-        // Script pour empêcher le formulaire de recharger la page et afficher un message de succès
-        document.getElementById('claimForm').onsubmit = function(event) {
-            event.preventDefault(); // Empêche le formulaire de se soumettre de manière traditionnelle
-
-            // Récupère les données du formulaire
-            var formData = new FormData(this);
-
-            // Envoie les données via Fetch API
-            fetch(this.action, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(function() {
-                // Affiche le message de succès
-                document.getElementById('successMessage').style.display = 'block';
-                // Optionnel : Réinitialiser le formulaire après soumission
-                document.getElementById('claimForm').reset();
-            })
-            .catch(function(error) {
-                console.error('Erreur lors de l\'envoi de la réclamation : ', error);
-            });
-        };
-    </script>
 </body>
 </html>
