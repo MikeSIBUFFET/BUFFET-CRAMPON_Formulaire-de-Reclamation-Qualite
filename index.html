@@ -1,129 +1,60 @@
-<?php
-session_start();
-
-// Mot de passe sécurisé (hashé avec password_hash())
-$valid_login = "admin";
-$valid_password_hash = '$2y$10$V1pC5rh6YeCZk18HPlBOeOeMox4yAnQoOJ/bOPC.f/p1CI2dXPr1K'; // "1234" hashé
-
-// Générer un token CSRF si nécessaire
-if (!isset($_SESSION['csrf_token'])) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-}
-
-// Vérification du formulaire de connexion
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token']) && hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-    $login = htmlspecialchars(trim($_POST['login'] ?? ''));
-    $password = $_POST['password'] ?? '';
-
-    if ($login === $valid_login && password_verify($password, $valid_password_hash)) {
-        $_SESSION['logged_in'] = true;
-        header('Location: index.php');
-        exit;
-    } else {
-        $error = "Login ou mot de passe incorrect.";
-    }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $error = "Requête invalide.";
-}
-
-// Déconnexion
-if (isset($_GET['logout'])) {
-    session_destroy();
-    header('Location: index.php');
-    exit;
-}
-
-// Vérification de l'accès à la page protégée
-$is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $is_logged_in ? "Formulaire de Réclamation Qualité" : "Connexion"; ?></title>
-    <style>
-        /* Styles communs */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
+    <title>Formulaire de Réclamation</title>
+    <script>
+        function handleFormSubmit(event) {
+            // Empêche le formulaire de se soumettre immédiatement
+            event.preventDefault();
+
+            // Récupérer les valeurs du formulaire
+            var acceptTerms = document.getElementById("acceptTerms").checked;
+            var email = document.getElementById("email").value;
+
+            // Vérifier si la case "J'accepte" est cochée
+            if (acceptTerms) {
+                // Afficher un message de confirmation
+                alert("Merci, votre réclamation a été soumise avec succès. Un email de confirmation a été envoyé à : " + email);
+                
+                // Simuler l'envoi d'un email (ici juste un message de simulation)
+                sendConfirmationEmail(email);
+            } else {
+                // Afficher un message de rejet
+                alert("Vous devez accepter les termes et conditions avant de soumettre votre réclamation.");
+                
+                // Simuler l'envoi d'un email de rejet
+                sendRejectionEmail(email);
+            }
         }
 
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px 40px;
-            max-width: 500px;
-            width: 90%;
+        function sendConfirmationEmail(email) {
+            // Simuler l'envoi d'un email (juste pour l'exemple, pas réellement un envoi)
+            console.log("Envoi d'un email de confirmation à " + email);
         }
 
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        function sendRejectionEmail(email) {
+            // Simuler l'envoi d'un email de rejet (juste pour l'exemple, pas réellement un envoi)
+            console.log("Envoi d'un email de rejet à " + email);
         }
-
-        button, .button-link {
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        button:hover, .button-link:hover {
-            background-color: #0056b3;
-        }
-
-        .logo {
-            max-width: 200px;
-            margin-bottom: 20px;
-        }
-
-        .error {
-            color: red;
-        }
-    </style>
+    </script>
 </head>
 <body>
-    <div class="container">
-        <?php if ($is_logged_in): ?>
-            <!-- Page protégée -->
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo_BC_2016.svg/1200px-Logo_BC_2016.svg.png" alt="Buffet Crampon Logo" class="logo">
-            <h2>Formulaire de Réclamation Qualité</h2>
-            <p>Pour remplir le formulaire et envoyer vos fichiers, cliquez sur le bouton ci-dessous :</p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSetGmiK5Q4bknHjxZAeURFUhecU75oKU5p5koeTNgGkpnq4gg/viewform?usp=sharing" 
-               target="_blank" class="button-link">Accéder au formulaire</a>
-            <p><a href="index.php?logout=true" class="button-link" style="background-color: #ff4d4d;">Déconnexion</a></p>
-        <?php else: ?>
-            <!-- Page de connexion -->
-            <h1>Connexion</h1>
-            <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
-            <form method="POST">
-                <input type="text" name="login" placeholder="Login" required>
-                <input type="password" name="password" placeholder="Mot de passe" required>
-                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-                <button type="submit">Se connecter</button>
-            </form>
-        <?php endif; ?>
-    </div>
+
+    <h2>Formulaire de Réclamation</h2>
+
+    <form id="claimForm" onsubmit="handleFormSubmit(event)">
+        <label for="email">Votre Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="acceptTerms">
+            <input type="checkbox" id="acceptTerms" name="acceptTerms">
+            J'accepte les termes et conditions
+        </label><br><br>
+
+        <button type="submit">Soumettre</button>
+    </form>
+
 </body>
 </html>
