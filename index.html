@@ -104,6 +104,23 @@
         }
     </style>
     <script>
+
+         // Détecter l'ouverture des DevTools
+        let devtoolsOpen = false;
+        const threshold = 160; // Valeur du seuil pour détecter l'ouverture des DevTools
+
+        setInterval(function() {
+            const width = window.outerWidth - window.innerWidth;
+            const height = window.outerHeight - window.innerHeight;
+
+            if (width > threshold || height > threshold) {
+                devtoolsOpen = true;
+                alert("Les outils de développement sont ouverts !");
+            } else {
+                devtoolsOpen = false;
+            }
+        }, 1000);
+        
         // Désactiver le clic droit
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault(); // Désactive le menu contextuel
