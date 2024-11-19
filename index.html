@@ -107,19 +107,20 @@
 
             // Identifiants de connexion (à adapter selon vos besoins)
             var validUsername = "admin";
-            var validPasswordMD5 = "482c811da5d5b4bc6d497ffa98491e38"; // Mot de passe 'buffet123' haché en MD5
+            var validPasswordMD5 = "482c811da5d5b4bc6d497ffa98491e38"; // MD5 du mot de passe 'buffet123'
 
             // Hachage MD5 du mot de passe saisi
             var passwordMD5 = CryptoJS.MD5(password).toString(CryptoJS.enc.Hex);
 
-            // Afficher dans la console pour débogage
+            // Affichage dans la console pour débogage
             console.log("Mot de passe saisi (MD5) :", passwordMD5);
             console.log("Mot de passe valide (MD5) :", validPasswordMD5);
 
             // Vérification des identifiants
             if (username === validUsername && passwordMD5 === validPasswordMD5) {
-                document.getElementById("formSection").style.display = "block"; // Afficher le formulaire après connexion réussie
-                document.getElementById("loginSection").style.display = "none"; // Masquer la section de login
+                alert("Connexion réussie !");
+                document.getElementById("formSection").style.display = "block"; // Affiche le formulaire
+                document.getElementById("loginSection").style.display = "none"; // Masque la section de login
             } else {
                 alert("Identifiants incorrects, veuillez réessayer.");
             }
