@@ -95,6 +95,13 @@
         .button-link:hover {
             background-color: #0056b3;
         }
+
+        /* Message d'erreur */
+        .error-message {
+            color: red;
+            font-size: 16px;
+            margin-top: 10px;
+        }
     </style>
     <script>
         // Désactiver le clic droit
@@ -129,6 +136,41 @@
                 devtoolsOpen = false;
             }
         }, 1000);
+
+        // Fonction pour hacher le mot de passe en SHA-256
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        // Validation de la connexion
+        async function validateLogin() {
+            // Récupérer les identifiants
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Identifiants valides (login et mot de passe en clair)
+            const validUsername = "admin";  // Remplacer par l'identifiant valide
+            const validPasswordHash = await hashPassword("buffet123");  // Mot de passe hashé (buffet123)
+
+            // Hacher le mot de passe saisi
+            const passwordHash = await hashPassword(password);
+
+            // Vérifier les identifiants
+            if (username === validUsername && passwordHash === validPasswordHash) {
+                // Si les identifiants sont corrects, afficher la section formulaire
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('formSection').style.display = 'block';
+                document.getElementById('error-message').style.display = 'none';  // Cacher le message d'erreur
+            } else {
+                // Si les identifiants sont incorrects, afficher un message d'erreur
+                document.getElementById('error-message').style.display = 'block';
+            }
+        }
     </script>
 </head>
 <body>
@@ -143,6 +185,9 @@
                 <input type="password" id="password" placeholder="Mot de passe" required>
                 <button type="submit">Se connecter</button>
             </form>
+            <div id="error-message" class="error-message" style="display:none;">
+                Identifiant ou mot de passe incorrect. Veuillez réessayer.
+            </div>
         </div>
 
         <!-- Section Formulaire de réclamation qualité -->
