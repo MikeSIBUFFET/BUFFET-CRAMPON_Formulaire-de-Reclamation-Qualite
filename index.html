@@ -99,7 +99,9 @@
     </style>
     <script>
         // Fonction pour valider le login avec MD5
-        function validateLogin() {
+        function validateLogin(event) {
+            event.preventDefault(); // Empêche la soumission du formulaire
+
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
 
@@ -109,6 +111,10 @@
 
             // Hachage MD5 du mot de passe saisi
             var passwordMD5 = CryptoJS.MD5(password).toString(CryptoJS.enc.Hex);
+
+            // Afficher dans la console pour débogage
+            console.log("Mot de passe saisi (MD5) :", passwordMD5);
+            console.log("Mot de passe valide (MD5) :", validPasswordMD5);
 
             // Vérification des identifiants
             if (username === validUsername && passwordMD5 === validPasswordMD5) {
@@ -127,7 +133,7 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo_BC_2016.svg/1200px-Logo_BC_2016.svg.png" alt="Buffet Crampon Logo" class="logo">
             <h2>Connexion</h2>
             <p>Veuillez vous connecter pour accéder au formulaire de réclamation qualité :</p>
-            <form class="login-form" onsubmit="event.preventDefault(); validateLogin();">
+            <form class="login-form" onsubmit="validateLogin(event)">
                 <input type="text" id="username" placeholder="Identifiant" required>
                 <input type="password" id="password" placeholder="Mot de passe" required>
                 <button type="submit">Se connecter</button>
