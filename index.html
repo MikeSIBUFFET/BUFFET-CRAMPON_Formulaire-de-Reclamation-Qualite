@@ -1,11 +1,50 @@
+<?php
+session_start();
+
+// Mot de passe sécurisé (hashé avec password_hash())
+$valid_login = "admin";
+$valid_password_hash = '$2y$10$V1pC5rh6YeCZk18HPlBOeOeMox4yAnQoOJ/bOPC.f/p1CI2dXPr1K'; // "1234" hashé
+
+// Générer un token CSRF si nécessaire
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+// Vérification du formulaire de connexion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['csrf_token']) && hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+    $login = htmlspecialchars(trim($_POST['login'] ?? ''));
+    $password = $_POST['password'] ?? '';
+
+    if ($login === $valid_login && password_verify($password, $valid_password_hash)) {
+        $_SESSION['logged_in'] = true;
+        header('Location: index.php');
+        exit;
+    } else {
+        $error = "Login ou mot de passe incorrect.";
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $error = "Requête invalide.";
+}
+
+// Déconnexion
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header('Location: index.php');
+    exit;
+}
+
+// Vérification de l'accès à la page protégée
+$is_logged_in = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire de Réclamation Qualité</title>
+    <title><?php echo $is_logged_in ? "Formulaire de Réclamation Qualité" : "Connexion"; ?></title>
     <style>
-        /* Style global */
+        /* Styles communs */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
@@ -19,7 +58,6 @@
             text-align: center;
         }
 
-        /* Conteneur principal */
         .container {
             background-color: #fff;
             border-radius: 8px;
@@ -29,57 +67,63 @@
             width: 90%;
         }
 
-        /* Logo de l'entreprise */
-        .logo {
-            max-width: 200px;
-            margin-bottom: 20px;
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
-        /* Titre */
-        h2 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 16px;
-        }
-
-        /* Texte d'introduction */
-        p {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 24px;
-        }
-
-        /* Bouton de formulaire */
-        .button-link {
-            display: inline-block;
-            padding: 12px 24px;
+        button, .button-link {
+            padding: 10px 20px;
             font-size: 16px;
             font-weight: bold;
             color: #fff;
             background-color: #007bff;
             border: none;
             border-radius: 4px;
+            cursor: pointer;
             text-decoration: none;
-            transition: background-color 0.3s ease;
+            display: inline-block;
+            margin-top: 10px;
         }
 
-        /* Effet hover sur le bouton */
-        .button-link:hover {
+        button:hover, .button-link:hover {
             background-color: #0056b3;
+        }
+
+        .logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Logo de Buffet Crampon -->
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo_BC_2016.svg/1200px-Logo_BC_2016.svg.png" alt="Buffet Crampon Logo" class="logo">
-
-        <h2>Formulaire de Réclamation Qualité</h2>
-        <p>Pour remplir le formulaire et envoyer vos fichiers, cliquez sur le bouton ci-dessous :</p>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSetGmiK5Q4bknHjxZAeURFUhecU75oKU5p5koeTNgGkpnq4gg/viewform?usp=sharing" 
-           target="_blank" class="button-link">
-            Accéder au formulaire
-        </a>
+        <?php if ($is_logged_in): ?>
+            <!-- Page protégée -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo_BC_2016.svg/1200px-Logo_BC_2016.svg.png" alt="Buffet Crampon Logo" class="logo">
+            <h2>Formulaire de Réclamation Qualité</h2>
+            <p>Pour remplir le formulaire et envoyer vos fichiers, cliquez sur le bouton ci-dessous :</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSetGmiK5Q4bknHjxZAeURFUhecU75oKU5p5koeTNgGkpnq4gg/viewform?usp=sharing" 
+               target="_blank" class="button-link">Accéder au formulaire</a>
+            <p><a href="index.php?logout=true" class="button-link" style="background-color: #ff4d4d;">Déconnexion</a></p>
+        <?php else: ?>
+            <!-- Page de connexion -->
+            <h1>Connexion</h1>
+            <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
+            <form method="POST">
+                <input type="text" name="login" placeholder="Login" required>
+                <input type="password" name="password" placeholder="Mot de passe" required>
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+                <button type="submit">Se connecter</button>
+            </form>
+        <?php endif; ?>
     </div>
 </body>
 </html>
