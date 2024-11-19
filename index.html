@@ -3,201 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire de Réclamation Qualité</title>
+    <title>Formulaire</title>
     <style>
-        /* Style global */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
-
-        /* Conteneur principal */
-        .container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px 40px;
-            max-width: 500px;
-            width: 90%;
-        }
-
-        /* Logo de l'entreprise */
-        .logo {
-            max-width: 200px;
-            margin-bottom: 20px;
-        }
-
-        /* Titre */
-        h2 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 16px;
-        }
-
-        /* Texte d'introduction */
-        p {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 24px;
-        }
-
-        /* Formulaire de login */
-        .login-form {
-            margin-bottom: 20px;
-        }
-
-        .login-form input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-
-        .login-form button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .login-form button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Bouton de formulaire */
-        .button-link {
-            display: inline-block;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Effet hover sur le bouton */
-        .button-link:hover {
-            background-color: #0056b3;
-        }
-
-        /* Message d'erreur */
-        .error-message {
-            color: red;
-            font-size: 16px;
-            margin-top: 10px;
-        }
+        body{font-family:Arial,sans-serif;background-color:#f4f4f9;color:#333;margin:0;padding:0;display:flex;justify-content:center;align-items:center;height:100vh;text-align:center}.container{background-color:#fff;border-radius:8px;box-shadow:0 4px 8px rgba(0,0,0,0.1);padding:20px 40px;max-width:500px;width:90%}.logo{max-width:200px;margin-bottom:20px}h2{color:#333;font-size:24px;margin-bottom:16px}p{color:#666;font-size:16px;margin-bottom:24px}.login-form{margin-bottom:20px}.login-form input{width:100%;padding:10px;margin:10px 0;border-radius:4px;border:1px solid #ccc}.login-form button{width:100%;padding:10px;background-color:#007bff;color:white;border:none;border-radius:4px;font-size:16px;cursor:pointer}.login-form button:hover{background-color:#0056b3}.button-link{display:inline-block;padding:12px 24px;font-size:16px;font-weight:bold;color:#fff;background-color:#007bff;border:none;border-radius:4px;text-decoration:none;transition:background-color 0.3s ease}.button-link:hover{background-color:#0056b3}.error-message{color:red;font-size:16px;margin-top:10px}
     </style>
     <script>
-
-         // Détecter l'ouverture des DevTools
-        let devtoolsOpen = false;
-        const threshold = 160; // Valeur du seuil pour détecter l'ouverture des DevTools
-
-        setInterval(function() {
-            const width = window.outerWidth - window.innerWidth;
-            const height = window.outerHeight - window.innerHeight;
-
-            if (width > threshold || height > threshold) {
-                devtoolsOpen = true;
-                alert("Les outils de développement sont ouverts !");
-            } else {
-                devtoolsOpen = false;
-            }
-        }, 1000);
-        
-        // Désactiver le clic droit
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault(); // Désactive le menu contextuel
-        });
-
-        // Désactiver certains raccourcis clavier pour les DevTools
-        document.addEventListener('keydown', function(e) {
-            // Désactive F12, Ctrl + Shift + I, Ctrl + U et Ctrl + Shift + U
-            if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 85)) || (e.ctrlKey && e.keyCode === 85)) {
-                e.preventDefault();
-            }
-            // Désactiver Ctrl + U
-            if (e.ctrlKey && e.keyCode === 85) {
-                e.preventDefault();
-            }
-        });
-
-        // Fonction pour hacher le mot de passe en SHA-256
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-            return hashHex;
-        }
-
-        // Identifiants hachés
-        const validUsernameHash = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";  // Hachage SHA-256 pour "admin"
-        const validPasswordHash = "3dadc55de21b7565f71046becfef95d7262613afab2b1b893cb3440cbc5b041b";  // Hachage SHA-256 pour "buffet123"
-
-        // Validation de la connexion
-        async function validateLogin() {
-            // Récupérer les identifiants
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Hacher le mot de passe saisi
-            const passwordHash = await hashPassword(password);
-            const usernameHash = await hashPassword(username);
-
-            // Vérifier les identifiants
-            if (usernameHash === validUsernameHash && passwordHash === validPasswordHash) {
-                // Si les identifiants sont corrects, afficher la section formulaire
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('formSection').style.display = 'block';
-                document.getElementById('error-message').style.display = 'none';  // Cacher le message d'erreur
-            } else {
-                // Si les identifiants sont incorrects, afficher un message d'erreur
-                document.getElementById('error-message').style.display = 'block';
-            }
-        }
+        document.addEventListener('contextmenu',function(e){e.preventDefault()});document.addEventListener('keydown',function(e){if(e.keyCode===123||(e.ctrlKey&&e.shiftKey&&(e.keyCode===73||e.keyCode===85))||(e.ctrlKey&&e.keyCode===85)){e.preventDefault()}});async function hashPassword(password){const encoder=new TextEncoder();const data=encoder.encode(password);const hashBuffer=await crypto.subtle.digest('SHA-256',data);const hashArray=Array.from(new Uint8Array(hashBuffer));const hashHex=hashArray.map(byte=>byte.toString(16).padStart(2,'0')).join('');return hashHex}const validUsernameHash="8d969eef6ecad3c29a3a629280e686cf0c1e7ce383bd803d6950e927b2f4b0d8";const validPasswordHash="a27c81d9a79820461efc1cc3b02ed91460799de61f09ad4046493c87b062f7a9";async function validateLogin(){const username=document.getElementById('username').value;const password=document.getElementById('password').value;const passwordHash=await hashPassword(password);const usernameHash=await hashPassword(username);if(usernameHash===validUsernameHash&&passwordHash===validPasswordHash){document.getElementById('loginSection').style.display='none';document.getElementById('formSection').style.display='block';document.getElementById('error-message').style.display='none'}else{document.getElementById('error-message').style.display='block'}}
     </script>
 </head>
 <body>
     <div class="container">
-        <!-- Section Login -->
         <div id="loginSection">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo_BC_2016.svg/1200px-Logo_BC_2016.svg.png" alt="Buffet Crampon Logo" class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo_BC_2016.svg/1200px-Logo_BC_2016.svg.png" alt="Logo" class="logo">
             <h2>Connexion</h2>
-            <p>Veuillez vous connecter pour accéder au formulaire de réclamation qualité :</p>
+            <p>Veuillez vous connecter :</p>
             <form class="login-form" onsubmit="event.preventDefault(); validateLogin();">
                 <input type="text" id="username" placeholder="Identifiant" required>
                 <input type="password" id="password" placeholder="Mot de passe" required>
                 <button type="submit">Se connecter</button>
             </form>
             <div id="error-message" class="error-message" style="display:none;">
-                Identifiant ou mot de passe incorrect. Veuillez réessayer.
+                Identifiant ou mot de passe incorrect.
             </div>
         </div>
-
-        <!-- Section Formulaire de réclamation qualité -->
         <div id="formSection" style="display:none;">
-            <h2>Formulaire de Réclamation Qualité</h2>
-            <p>Pour remplir le formulaire et envoyer vos fichiers, cliquez sur le bouton ci-dessous :</p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSetGmiK5Q4bknHjxZAeURFUhecU75oKU5p5koeTNgGkpnq4gg/viewform?usp=sharing" 
-                target="_blank" class="button-link">
+            <h2>Formulaire</h2>
+            <p>Pour remplir, cliquez ci-dessous :</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSetGmiK5Q4bknHjxZAeURFUhecU75oKU5p5koeTNgGkpnq4gg/viewform?usp=sharing" target="_blank" class="button-link">
                 Accéder au formulaire
             </a>
         </div>
