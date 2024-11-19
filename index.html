@@ -18,6 +18,8 @@
             height: 100vh;
             text-align: center;
         }
+
+        /* Conteneur principal */
         .container {
             background-color: #fff;
             border-radius: 8px;
@@ -26,20 +28,32 @@
             max-width: 500px;
             width: 90%;
         }
+
+        /* Logo de l'entreprise */
         .logo {
             max-width: 200px;
             margin-bottom: 20px;
         }
+
+        /* Titre */
         h2 {
             color: #333;
             font-size: 24px;
             margin-bottom: 16px;
         }
+
+        /* Texte d'introduction */
         p {
             color: #666;
             font-size: 16px;
             margin-bottom: 24px;
         }
+
+        /* Formulaire de login */
+        .login-form {
+            margin-bottom: 20px;
+        }
+
         .login-form input {
             width: 100%;
             padding: 10px;
@@ -47,6 +61,7 @@
             border-radius: 4px;
             border: 1px solid #ccc;
         }
+
         .login-form button {
             width: 100%;
             padding: 10px;
@@ -57,9 +72,12 @@
             font-size: 16px;
             cursor: pointer;
         }
+
         .login-form button:hover {
             background-color: #0056b3;
         }
+
+        /* Bouton de formulaire */
         .button-link {
             display: inline-block;
             padding: 12px 24px;
@@ -72,31 +90,30 @@
             text-decoration: none;
             transition: background-color 0.3s ease;
         }
+
+        /* Effet hover sur le bouton */
         .button-link:hover {
             background-color: #0056b3;
         }
     </style>
     <script>
-        // Protection basique contre les outils de développement
-        document.addEventListener('keydown', function(e) {
-            if ((e.ctrlKey && e.shiftKey && e.key === 'I') || e.key === 'F12') {
-                e.preventDefault();
-                alert("Action désactivée.");
-            }
-        });
+        // Identifiants chiffrés en Base64
+        const encryptedUsername = "YWRtaW4="; // Identifiant "admin" encodé en Base64
+        const encryptedPassword = "YnVmZmV0MTIz"; // Mot de passe "buffet123" encodé en Base64
 
-        // Obfuscation du script de validation (exemple simplifié)
-        function _0x2a44(_0x1fa0d9, _0x41a0e7) {
-            const _0x4101 = ['admin', 'YnVmZmV0MTIz'];
-            return atob(_0x4101[1]) === _0x41a0e7 && _0x4101[0] === _0x1fa0d9;
-        }
-
+        // Fonction pour valider le login
         function validateLogin() {
-            var username = document.getElementById("username").value;
-            var password = document.getElementById("password").value;
-            if (_0x2a44(username, password)) {
-                document.getElementById("formSection").style.display = "block";
-                document.getElementById("loginSection").style.display = "none";
+            const inputUsername = document.getElementById("username").value;
+            const inputPassword = document.getElementById("password").value;
+
+            // Décoder les identifiants chiffrés
+            const decodedUsername = atob(encryptedUsername);
+            const decodedPassword = atob(encryptedPassword);
+
+            // Vérifier si les valeurs saisies correspondent aux identifiants décodés
+            if (inputUsername === decodedUsername && inputPassword === decodedPassword) {
+                document.getElementById("formSection").style.display = "block"; // Afficher le formulaire après connexion réussie
+                document.getElementById("loginSection").style.display = "none"; // Masquer la section de login
             } else {
                 alert("Identifiants incorrects, veuillez réessayer.");
             }
