@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulaire de Réclamation Qualité</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1-crypto-js.min.js"></script>
     <style>
         /* Style global */
         body {
@@ -97,20 +98,20 @@
         }
     </style>
     <script>
-        // Fonction pour valider le login
+        // Fonction pour valider le login avec MD5
         function validateLogin() {
             var username = document.getElementById("username").value;
             var password = document.getElementById("password").value;
 
             // Identifiants de connexion (à adapter selon vos besoins)
             var validUsername = "admin";
-            var validPasswordEncoded = "YnVmZmV0MTIz";  // Mot de passe 'buffet123' encodé en base64
+            var validPasswordMD5 = "482c811da5d5b4bc6d497ffa98491e38"; // Mot de passe 'buffet123' haché en MD5
 
-            // Décodage du mot de passe
-            var validPassword = atob(validPasswordEncoded);
+            // Hachage MD5 du mot de passe saisi
+            var passwordMD5 = CryptoJS.MD5(password).toString(CryptoJS.enc.Hex);
 
             // Vérification des identifiants
-            if (username === validUsername && password === validPassword) {
+            if (username === validUsername && passwordMD5 === validPasswordMD5) {
                 document.getElementById("formSection").style.display = "block"; // Afficher le formulaire après connexion réussie
                 document.getElementById("loginSection").style.display = "none"; // Masquer la section de login
             } else {
