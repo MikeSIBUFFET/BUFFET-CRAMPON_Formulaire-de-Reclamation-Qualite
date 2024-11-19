@@ -104,8 +104,12 @@
 
         // Désactiver certains raccourcis clavier pour les DevTools
         document.addEventListener('keydown', function(e) {
-            // Désactive F12, Ctrl + Shift + I et Ctrl + U
-            if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 85))) {
+            // Désactive F12, Ctrl + Shift + I, Ctrl + U et Ctrl + Shift + U
+            if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 85)) || (e.ctrlKey && e.keyCode === 85)) {
+                e.preventDefault();
+            }
+            // Désactiver Ctrl + U
+            if (e.ctrlKey && e.keyCode === 85) {
                 e.preventDefault();
             }
         });
