@@ -6,91 +6,59 @@
     <title>Buffet Crampon - Accès Formulaire</title>
     <link rel="icon" href="https://loyaltyprogram.buffetcrampon.com/favicon.ico" type="image/x-icon">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
-        .container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            animation: fadeIn 1s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .logo {
-            max-width: 150px;
-            margin-bottom: 20px;
-        }
-        h2 {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 16px;
-        }
-        p {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 24px;
-        }
-        .login-form input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-        }
-        .login-form button {
-            width: 100%;
-            padding: 12px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        .login-form button:hover {
-            background: #0056b3;
-        }
-        .button-link {
-            display: inline-block;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            background: #007bff;
-            border: none;
-            border-radius: 4px;
-            text-decoration: none;
-            transition: background 0.3s ease;
-        }
-        .button-link:hover {
-            background: #0056b3;
-        }
-        .error-message {
-            color: red;
-            font-size: 16px;
-            margin-top: 10px;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #007bff, #0056b3); color: #333; display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; }
+        .container { background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); padding: 40px; max-width: 500px; width: 90%; animation: fadeIn 1s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .logo { max-width: 150px; margin-bottom: 20px; }
+        h2 { color: #333; font-size: 28px; margin-bottom: 16px; }
+        p { color: #666; font-size: 16px; margin-bottom: 24px; }
+        .login-form input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc; font-size: 16px; }
+        .login-form button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; transition: background 0.3s ease; }
+        .login-form button:hover { background: #0056b3; }
+        .button-link { display: inline-block; padding: 12px 24px; font-size: 16px; font-weight: bold; color: #fff; background: #007bff; border: none; border-radius: 4px; text-decoration: none; transition: background 0.3s ease; }
+        .button-link:hover { background: #0056b3; }
+        .error-message { color: red; font-size: 16px; margin-top: 10px; }
     </style>
+    <script>
+        let devtoolsOpen = false;
+        const threshold = 160;
+        setInterval(function() {
+            const width = window.outerWidth - window.innerWidth;
+            const height = window.outerHeight - window.innerHeight;
+            if (width > threshold || height > threshold) {
+                devtoolsOpen = true;
+                alert("Veuillez fermer les outils de développement !");
+            } else {
+                devtoolsOpen = false;
+            }
+        }, 1000);
+        document.addEventListener('contextmenu',function(e){e.preventDefault()});
+        document.addEventListener('keydown',function(e){if(e.keyCode===123||(e.ctrlKey&&e.shiftKey&&(e.keyCode===73||e.keyCode===85))||(e.ctrlKey&&e.keyCode===85)){e.preventDefault()}});
+        async function hashPassword(password){
+            const encoder=new TextEncoder();
+            const data=encoder.encode(password);
+            const hashBuffer=await crypto.subtle.digest('SHA-256',data);
+            const hashArray=Array.from(new Uint8Array(hashBuffer));
+            const hashHex=hashArray.map(byte=>byte.toString(16).padStart(2,'0')).join('');
+            return hashHex;
+        }
+        const validUsernameHash="8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918";
+        const validPasswordHash="3dadc55de21b7565f71046becfef95d7262613afab2b1b893cb3440cbc5b041b";
+        async function validateLogin(){
+            const username=document.getElementById('username').value;
+            const password=document.getElementById('password').value;
+            const passwordHash=await hashPassword(password);
+            const usernameHash=await hashPassword(username);
+            if(usernameHash===validUsernameHash&&passwordHash===validPasswordHash){
+                document.getElementById('loginSection').style.display='none';
+                document.getElementById('formSection').style.display='block';
+                document.getElementById('error-message').style.display='none';
+            }else{
+                document.getElementById('error-message').style.display='block';
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container">
@@ -107,7 +75,6 @@
                 Identifiant ou mot de passe incorrect.
             </div>
         </div>
-
         <div id="formSection" style="display:none;">
             <h2>Formulaire de Réclamation Qualité</h2>
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo_BC_2016.svg/1200px-Logo_BC_2016.svg.png" alt="Logo" class="logo">
