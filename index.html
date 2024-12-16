@@ -21,20 +21,14 @@
             overflow: hidden;
         }
         .background-video {
-            position: absolute;
-            inset: 0;
-            width: 1694.22px;
-            height: 1353px;
-            max-width: none;
-            max-height: none;
-            pointer-events: none;
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            will-change: transform, opacity;
-            margin: -200px 0 0 -393.111px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
             z-index: -1;
-            transform: translate3d(0px, 0px, 0px);
-            visibility: visible;
+            pointer-events: none;
         }
         .container {
             background: rgba(255, 255, 255, 0.9);
@@ -43,6 +37,7 @@
             padding: 20px 40px;
             max-width: 500px;
             width: 90%;
+            z-index: 1;
         }
         .logo {
             max-width: 200px;
