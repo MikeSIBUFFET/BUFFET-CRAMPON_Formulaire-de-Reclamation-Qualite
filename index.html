@@ -21,13 +21,20 @@
             overflow: hidden;
         }
         .background-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            position: absolute;
+            inset: 0;
+            width: 1694.22px;
+            height: 1353px;
+            max-width: none;
+            max-height: none;
+            pointer-events: none;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            will-change: transform, opacity;
+            margin: -200px 0 0 -393.111px;
             z-index: -1;
+            transform: translate3d(0px, 0px, 0px);
+            visibility: visible;
         }
         .container {
             background: rgba(255, 255, 255, 0.9);
@@ -98,7 +105,7 @@
     </style>
 </head>
 <body>
-    <iframe class="background-video" src="https://www.youtube.com/embed/Z0jHXnbs-lE?autoplay=1&mute=1&loop=1&controls=0&playlist=Z0jHXnbs-lE" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    <iframe class="background-video" src="https://www.youtube-nocookie.com/embed/Z0jHXnbs-lE?autohide=1&rel=0&autoplay=1&playsinline=1&iv_load_policy=3&modestbranding=1&controls=0&showinfo=0&disablekb=1&enablejsapi=1&origin=https%3A%2F%2Feu.buffet-crampon.com&widgetid=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" title="Buffet Crampon Festival en mopane" tabindex="-1" aria-hidden="true"></iframe>
     <div class="container">
         <div id="loginSection">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Logo_BC_2016.svg/1200px-Logo_BC_2016.svg.png" alt="Logo" class="logo">
